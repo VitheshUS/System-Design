@@ -1,0 +1,91 @@
+OSI:
+Application
+presentation
+session
+Transport
+Network
+Datalink
+Physical
+
+### **1. OSI vs TCP/IP**
+
+* **OSI (7 layers)** → purely a *theoretical model* (application → presentation → session → transport → network → data link → physical).
+* **TCP/IP (4 layers)** → what we actually use in practice:
+
+  * **Application** (HTTP, DNS, TLS, etc.)
+  * **Transport** (TCP, UDP)
+  * **Internet** (IP)
+  * **Link/Network Access** (Ethernet, Wi-Fi, fiber, etc.)
+
+#### **Application Layer**
+
+* You type a URL.
+* Browser resolves **domain → IP** via DNS.
+
+  * DNS mostly uses **UDP** (fast, 1 packet request + 1 packet response).
+  * Sometimes TCP if the response is too big or for DNSSEC.
+* If HTTPS: TLS handshake will be required before real data exchange.
+
+---
+
+#### **Presentation Layer (theoretical only)**
+
+* In OSI: encryption, compression, encoding would live here.
+* In practice: **TLS/SSL is handled inside the Application layer**.
+* HTTP + TLS = HTTPS.
+
+---
+
+#### **Session Layer (theoretical only)**
+
+* OSI says: establish/manage sessions.
+* In practice: **TCP handles sessions** (connection, reliability, sequencing).
+* Application protocols (like HTTP cookies, tokens, JWTs) manage “logical sessions.”
+
+---
+
+#### **Transport Layer**
+
+* Chooses TCP or UDP.
+* **TCP:** reliable, ordered, 3-way handshake (1 RTT).
+* **UDP:** connectionless, 0 RTT, faster but unreliable.
+* Data chopped into **segments**.
+
+---
+
+#### **Network Layer**
+
+* Adds **source and destination IPs** (IPv4/IPv6).
+* Forms **packets**.
+* Routers forward based on IP.
+
+---
+
+#### **Data Link Layer**
+Used only in LANs
+* Deals with **MAC addresses**, switches, ARP resolution.
+* Frames are created with **source/dest MAC**.
+* Used only on local network segments.
+ARP: Address Resolution protocol
+The rotuer sends a signals accross the netwrok asking that who has the IP xxx please send me you MAC address so that i can send the data to you
+
+---
+
+#### **Physical Layer**
+
+* Actual transmission:
+
+  * Radio (Wi-Fi, 4G, 5G)
+  * Electrical signals (Ethernet)
+  * Light pulses (fiber optic)
+
+
+---
+So, the **timeline** when you type a URL (HTTPS) is:
+
+1. DNS query (UDP, 1 RTT).
+2. TCP handshake with server (1 RTT).
+3. TLS handshake (1–2 RTT depending on version).
+4. Send HTTP request.
+5. Get HTTP response.
+
