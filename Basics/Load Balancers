@@ -9,3 +9,18 @@ High Availability: LBs themselves are replicated (multiple LBs in active-active 
 Cost justification: Horizontal scaling with LB gives flexibility — you can add/remove servers dynamically instead of paying huge costs upfront.
 Performance: In modern data centers, the LB-to-server latency is negligible.
 
+There are 2 types of load balancers: Level 4 and Level 7
+
+Layer 4 (L4):
+Operates at the transport layer, using IP addresses and ports to distribute traffic across servers.
+It’s simple and fast, focusing on performance rather than flexibility.
+L4 does not inspect the content of the requests—its primary job is to forward traffic efficiently.
+
+Layer 7 (L7):
+Operates at the application layer and can make routing decisions based on HTTP headers, URLs, cookies, or even request content.
+L7 provides more features and flexibility, including:
+TLS termination: The client establishes a secure connection with the load balancer, which handles encryption/decryption, offloading this work from the servers.
+Health checks: The load balancer can check if a server is active and route traffic accordingly, often by probing application endpoints.
+Session persistence: Ensures that requests from the same client go to the same server when necessary.
+Caching: Can store sessions or frequently accessed content to improve performance.
+
