@@ -12,11 +12,6 @@ Physical
 * **OSI (7 layers)** → purely a *theoretical model* (application → presentation → session → transport → network → data link → physical).
 * **TCP/IP (4 layers)** → what we actually use in practice:
 
-  * **Application** (HTTP, DNS, TLS, etc.)
-  * **Transport** (TCP, UDP)
-  * **Internet** (IP)
-  * **Link/Network Access** (Ethernet, Wi-Fi, fiber, etc.)
-
 #### **Application Layer**
 
 * You type a URL.
@@ -89,3 +84,67 @@ So, the **timeline** when you type a URL (HTTPS) is:
 4. Send HTTP request.
 5. Get HTTP response.
 
+
+TCP/IP: This is actually used in modern internet communication
+Application (HTTP, DNS, TLS, etc.)
+Transport (TCP, UDP)
+Internet (IP)
+Link/Network Access (Ethernet, Wi-Fi, fiber, etc.)
+
+Because we have layers it dosent mean that the process happens layer by layer.
+There are just level and we tell where each step recides.
+
+We use the **TCP/IP stack** in modern networking:
+
+* **Application layer** → protocols like HTTP, DNS, TLS
+* **Transport layer** → TCP (reliable, ordered) or UDP (fast, no guarantees)
+* **Internet layer** → IP (source/destination addressing, routing)
+* **Link layer** → Ethernet, Wi-Fi, etc. (local delivery, MAC addressing)
+
+The layers are just abstractions — things don’t literally happen one after another, but each layer has its role.
+
+
+### Typical flow (when I type a URL):
+
+1. **DNS Resolution**
+
+   * The domain is resolved to an IP address.
+   * Usually uses **UDP** because it’s fast (no handshake).
+   * Time depends on distance + whether results are cached (can be \~20–100ms if not cached, near instant if cached).
+
+2. **TCP Connection (if chosen over UDP)**
+
+   * Client and server establish a connection using the **3-way handshake** (1 RTT).
+   * RTT depends on server distance → could be \~20ms in-region, or 100ms+ across continents.
+   * TCP ensures reliability by **retransmitting lost packets and keeping order**, not by magically preventing loss.
+   * If there is a packet loss then , the sender retransmits the packets.
+   * The reciever send ACK for a chucnk of packets. if there is something woring in ACK recieved then the sender knows this and will retransmit the apporpriate packets.
+
+3. **TLS Handshake (if HTTPS)**
+
+   * Extra step to agree on encryption keys.
+   * TLS 1.2 costs 1–2 RTTs, TLS 1.3 is faster (can piggyback on TCP handshake, so no extra delay).
+   * Time depends on distance + server setup (\~20–200ms if not optimized).
+
+4. **Data Transfer**
+
+   * Now the client and server can actually exchange data.
+   * With TCP, the stream is reliable and ordered. Application decides when “whole message” is done.
+
+---
+
+### Local Network (LAN) part:
+
+* Devices on the same LAN use **private IPs**.
+* The router maps local IPs to MAC addresses using **ARP** (Address Resolution Protocol).
+* First time: router broadcasts “Who has IP X?” → device replies with its MAC.
+* After that, it caches the mapping (no need to broadcast every time).
+
+---
+
+### Caching everywhere
+
+* **DNS cache** → saves repeated lookups.
+* **ARP cache** → avoids spamming the LAN with broadcasts.
+* **HTTP/TLS session reuse** → cuts down on repeated handshakes.
+  Caching is a huge part of why the web feels fast.
