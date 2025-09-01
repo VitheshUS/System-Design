@@ -1,0 +1,11 @@
+A load balancer is a component that distributes incoming traffic across multiple backend servers. Without it, all traffic would hit a single server, which risks overload and single point of failure.
+Scaling vertically (adding CPU/RAM to one server) only goes so far and gets very expensive. Instead, we scale horizontally by adding more servers, and a load balancer makes this possible. It improves performance, avoids downtime, and makes scaling easier.
+Modern load balancers also do more than just traffic distribution — they perform health checks to stop sending traffic to unhealthy servers, and they can provide features like SSL/TLS termination, caching, or session stickiness depending on the level (L4 vs L7).
+So in short, a load balancer is central to building scalable, highly available systems.
+
+
+Health Checks: LB periodically pings servers, removes bad ones from the pool.
+High Availability: LBs themselves are replicated (multiple LBs in active-active or active-passive mode).
+Cost justification: Horizontal scaling with LB gives flexibility — you can add/remove servers dynamically instead of paying huge costs upfront.
+Performance: In modern data centers, the LB-to-server latency is negligible.
+
