@@ -1,0 +1,106 @@
+Availability in Distributed Systems**
+
+Availability means that a system or service is always accessible whenever a user tries to use it.
+
+* The system should have **minimal downtime**.
+* The data may not always be fully **consistent**, but it must always be **accessible**.
+* High availability is especially critical for systems that serve millions of users continuously.
+
+---
+
+### **Consistency Models and Availability**
+
+1. **Weak Consistency**
+
+   * After a write, there’s no guarantee that a read will see it.
+   * Data may or may not be updated when read.
+   * Example: VoIP, online games—if a packet is lost, it’s not recovered, but the service continues.
+   * **Trade-off:** Very high availability, but poor guarantees on correctness.
+
+2. **Eventual Consistency**
+
+   * After a write, all replicas will eventually reflect the change, typically within milliseconds or seconds.
+   * Data is replicated **asynchronously**.
+   * Example: DNS, YouTube uploads, social media feeds.
+   * **Trade-off:** Good balance—high availability, but a short window of stale reads.
+
+3. **Strong Consistency**
+
+   * After a write, every subsequent read will see the latest value.
+   * Data is replicated **synchronously**.
+   * Example: Banking systems, RDBMS.
+   * **Trade-off:** Lower availability and higher latency, but correctness is guaranteed.
+
+---
+
+How to Achieve High Availability
+
+1. Replication
+
+    Data is stored across multiple replicas (servers or data centers).
+    Benefits:
+
+     If one server fails, another can serve requests.
+    Improves fault tolerance and enables horizontal scaling.
+   Replication can be **synchronous** (strong consistency, lower availability) or **asynchronous** (eventual consistency, higher availability).
+
+2. Failover
+
+    Mechanism to switch traffic to a backup server when the primary one fails.
+    Two types:
+
+     Active-Passive:** Only one active server; the passive server monitors via heartbeats and takes over if active fails.
+     Active-Active:** Multiple active servers serve traffic simultaneously, often behind a load balancer. Provides better availability but requires conflict resolution for concurrent writes.
+
+
+Availability = system must always respond, even if data is stale.
+Weak consistency → fastest, but no guarantees.
+Eventual consistency → eventual correctness, great for social apps.
+Strong consistency → correctness guaranteed, but availability may suffer.
+Techniques for availability: Replication + Failover (Active-Passive, Active-Active).
+
+Alright 🚀 — here’s your **polished, interview-ready explanation** of ARP + VIP failover.
+
+---
+
+## **ARP and Virtual IP in Failover**
+
+### **ARP Basics**
+
+* ARP (**Address Resolution Protocol**) is used within a LAN to map an **IP address (Layer 3)** to a **MAC address (Layer 2)**.
+* When a device (router, server, or client) wants to send data to an IP in the same subnet, it broadcasts:
+  *“Who has this IP? Tell me your MAC.”*
+* The device that owns the IP replies with its MAC address.
+* The requester caches this mapping (IP → MAC) for future communication.
+
+---
+
+The Problem**
+
+* Suppose a server with IP `10.0.0.100` is active and serving clients.
+* The router (or client) has cached `10.0.0.100 → MAC:AA-AA-AA-AA`.
+* If the server fails, the router still tries sending traffic to the same MAC, which is now unreachable.
+
+---
+
+The Solution: Virtual IP + Gratuitous ARP
+
+* In high availability setups, a **Virtual IP (VIP)** is used.
+* The VIP is not tied to one physical server — it can float between active and passive nodes.
+* When the active server fails:
+
+  1. The passive server claims the VIP.
+  2. It immediately sends a **gratuitous ARP** (unsolicited ARP reply) to the LAN.
+  3. This tells all devices: *“The VIP (10.0.0.100) now maps to my MAC (BB-BB-BB-BB).”*
+  4. All cached ARP tables are updated instantly.
+* From the client’s perspective, nothing changes — they still connect to the same IP, but traffic is now routed to the passive server.
+
+---
+
+Summary
+
+* **ARP = protocol** that maps IP → MAC in a LAN.
+* **Caching** means devices don’t re-broadcast constantly.
+* **Problem**: If a server dies, cached ARP still points to the dead MAC.
+* **Solution**: Use a **VIP** and have the passive server broadcast a **gratuitous ARP** to take over traffic.
+* This makes failover **transparent** to clients.
