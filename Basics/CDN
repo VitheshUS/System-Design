@@ -49,3 +49,11 @@ In DNS, the domain (e.g., example.com) is usually mapped to the CDN provider (vi
 The client then establishes a TCP connection directly with that edge node IP.
 So the CDN provider isn’t “redirecting” traffic after the fact — the routing decision happens inside DNS resolution (sometimes aided by Anycast).
 The client doesn’t know whether it’s talking to an edge server or the origin — it just sees a domain → IP and connects
+
+
+There are also 2 types of CDN:
+Push and Pull CDN:
+
+Push means: the content is pushed into the CDN, and then the client takes the content form these CDN.
+
+Pull means: Our typical CDN where the data is fetched from the origin if not cached in the CDN and then cached for further requests.
