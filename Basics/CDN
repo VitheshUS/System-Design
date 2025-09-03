@@ -1,0 +1,51 @@
+CDN are basically servers that server static content to the clients.
+Basically they cache html,js, images ,video ets.
+CDNs are stored typically close to the users.
+There are types of CDN,
+Orgins and Edge servers.
+
+So the first fetch will happen in the edge ser er and if there is a hit then the content will be server from that CDN.
+If the requested file is not in the edge then it will be fetched from the origin CDN.
+So the orgin must contain the data.
+And edge basically caches these data. Caches also invloved TTL(Time to live)
+The caching can also happen in the browsser itself.
+
+CDN are distributed accross the globe and they are present near to the users.
+CDN is also a server which behaves just like any server which has its own memory,ram,os but we dont have infinite storage here.
+If we want to store bigger files then we can simply use object storage and pay for what we use.
+
+Hence we store such files based on our use case in Origin CDN.
+
+CDN dosent just store files and give them when asked for,
+It can do more than just store and serve, It can authorize.verfy tokens and server files based on that as well.
+
+So what is happening is,
+The DNS has the IP of these edge CDN, but DNS must make sure which edge server IP must be give based on the region.
+but sometimes it can be directly a server as well if we are using dynamic pages.
+The client will download that file and run that application in our web browser. 
+After that we our application will it self communicate with a different domain.
+
+/*********************************************************************************************************************************
+Version 2:
+So basically lets me go from the begining.
+If we have a single origin server where we are storing the static files such as js, images,videos and sometimes html if they are static then fetching them would be very slow.
+The request has to travel a lot.
+So we are requesting them again and again then its really bad.
+So lets caches them some where after an initial fetch.
+So here we need a network that does this for us.
+CDN is the one.
+So here we create multiple edge servers in different locations and the requests hit these edge servers initially.
+So what these does is these edge servers fetch the content from the origin server and then they cache it and send the content to the client.
+Its not necessary that edge server will cache everything. Its completly on how we configure it.
+So we have an orgin server or multiple ones for availablity and we have these edge server spread across.
+
+The caching can also happen in the web browser itself. But all these caching inculde TTL so that the old cache wont persist for a longer time that necessary.
+Again this is also a configuration that we can do.
+I can assign a longer TTL for content that wont change for a longer period like logos.
+Even the normal JSON can be cached if we want.
+And again CDNs dont have infinite caching, so the leaset recently used are removed.
+
+In DNS, the domain (e.g., example.com) is usually mapped to the CDN provider (via CNAME). When a client does a DNS lookup, the CDN’s authoritative DNS servers decide which edge node IP to return, based on health, location, and load.
+The client then establishes a TCP connection directly with that edge node IP.
+So the CDN provider isn’t “redirecting” traffic after the fact — the routing decision happens inside DNS resolution (sometimes aided by Anycast).
+The client doesn’t know whether it’s talking to an edge server or the origin — it just sees a domain → IP and connects
