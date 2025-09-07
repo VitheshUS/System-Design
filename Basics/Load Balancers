@@ -24,3 +24,18 @@ Health checks: The load balancer can check if a server is active and route traff
 Session persistence: Ensures that requests from the same client go to the same server when necessary.
 Caching: Can store sessions or frequently accessed content to improve performance.
 
+
+The load balancer can be hardware loadbalancer or a software loadbalancer:
+
+There are different ways to create a loadbalancer,
+We can take an EC2 instance and convert that into a load balancer by running NGINX on it, or we can rent a baremetal loadbalancer from  datacenter
+Or use a cloud load balancer like ALB or NLB.
+
+IT all depends on the scenarios where im going to use these.
+“In the early stages, I’d go cloud-native to focus on product development and marketing rather than infrastructure. 
+Cloud scales automatically with traffic, so we only pay for what we use. If the product proves successful and traffic grows predictably, 
+we can later evaluate self-managed servers for cost optimization or special performance needs.”
+
+“NGINX is event-driven and non-blocking, so a single worker can handle thousands of TCP connections asynchronously. 
+Unlike traditional thread-per-connection servers, NGINX uses a master-worker architecture and an event loop, making it extremely memory- and CPU-efficient, 
+capable of handling millions of concurrent users.”
