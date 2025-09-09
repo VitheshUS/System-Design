@@ -1,0 +1,12 @@
+NGINX
+NGINX is a high-performance proxy server widely used as a web server or reverse proxy. It’s typically placed close to the backend servers — in the same data center or region — with the goal of offloading infrastructure-related tasks from the application servers.
+Without a proxy like NGINX, the backend servers would have to handle all incoming TCP connections, perform TLS termination, manage caching, session persistence, compression, and serve static files. While modern servers are capable of performing these tasks, doing so consumes significant CPU, memory, and bandwidth — resources that should be dedicated to processing business logic.
+By separating concerns — just as we separate infrastructure, business logic, and application layers — we delegate tasks like encryption, caching, and session management to NGINX. This keeps the backend servers focused on their primary role.
+NGINX is designed to efficiently manage many connections because it is event-driven and uses non-blocking I/O. This architecture allows it to handle thousands of requests using minimal resources, making operations like TLS termination, caching, and compression far more efficient than a typical backend server would.
+After processing requests, NGINX forwards them to the backend server. The backend’s role is simplified — it handles business logic and responds to requests without worrying about connection management or optimization. NGINX can also perform basic load balancing, distributing requests among multiple backend servers, which aids scalability.
+This setup not only improves performance but also makes scaling flexible and manageable at the application level.
+
+HAProxy
+HAProxy operates at a higher level than NGINX. Its primary focus is advanced load balancing across multiple data centers or regions. It provides features like health checks, failover, retries, and observability at a global scale.
+HAProxy is typically deployed at the edge, where it receives incoming traffic and routes it to the appropriate NGINX or backend instances based on availability, load, or geographic considerations.
+Together, HAProxy and NGINX provide a robust, scalable architecture — HAProxy ensures high availability and traffic routing across regions, while NGINX optimizes local traffic and offloads infrastructure tasks from backend servers.
